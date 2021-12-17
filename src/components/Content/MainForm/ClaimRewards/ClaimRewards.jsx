@@ -2,6 +2,8 @@ import React, { useEffect, useState, useCallback } from 'react';
 import sha512 from 'crypto-js/sha512';
 import axios from 'axios';
 
+import Loader from 'components/Loader';
+
 import { USER_INFO_LOCAL_STORAGE_KEY } from 'constants/localStorageKeys';
 
 import { yoctoNEARToNear } from './utils';
@@ -16,6 +18,7 @@ const VALIDATORS = [
 
 const ClaimRewards = ({ wallet, contract, userInfo }) => {
   const [userRewards, setUserRewards] = useState('-');
+  const [isLoading, setIsLoading] = useState(false);
   const { accountId } = wallet.account();
   const { userId, accessToken } = userInfo;
 
@@ -32,6 +35,8 @@ const ClaimRewards = ({ wallet, contract, userInfo }) => {
   }, []);
 
   const claimRewards = useCallback(async () => {
+    setIsLoading(true);
+
     const sha = sha512(userId + accessToken + accountId);
 
     const commitment_hash = Buffer.from(sha.toString(), 'hex');
@@ -90,9 +95,11 @@ const ClaimRewards = ({ wallet, contract, userInfo }) => {
       localStorage.removeItem(USER_INFO_LOCAL_STORAGE_KEY);
       updateBalance();
     }
+
+    setIsLoading(false);
   }, []);
 
-  return (
+  return isLoading ? <Loader className={styles.loader} /> : (
     <div>
       <div className={styles.label}>
         You have rewards: {userRewards} Ⓝ
