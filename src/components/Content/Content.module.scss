@@ -1,0 +1,8 @@
+@import 'styles/variables.module';
+
+.content {
+  background-color: $background-primary;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+}

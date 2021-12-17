@@ -1,0 +1,9 @@
+@import 'styles/variables.module';
+
+.mainForm {
+  width: 400px;
+  border-radius: 20px;
+  background-color: $background-secondary;
+  margin: auto;
+  padding: 30px 20px;
+}

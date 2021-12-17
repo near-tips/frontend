@@ -1,0 +1,9 @@
+@import "styles/button";
+
+.stackButton {
+  @extend .button;
+}
+
+.loader {
+  text-align: center;
+}
