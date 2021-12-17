@@ -9,7 +9,9 @@ import { yoctoNEARToNear } from './utils';
 import styles from './ClaimRewards.module.scss';
 
 const VALIDATORS = [
-  'https://api.near-tips.com/v1/trans/sign',
+  'http://165.227.173.249:8081',
+  'http://207.154.251.251:8081',
+  'http://207.180.249.14:8081',
 ];
 
 const ClaimRewards = ({ wallet, contract, userInfo }) => {
@@ -19,10 +21,14 @@ const ClaimRewards = ({ wallet, contract, userInfo }) => {
 
   console.log({ accountId, userId, accessToken }, userId + accessToken + accountId);
 
+  const updateBalance = useCallback(async () => {
+    const rewards = await contract.current.get_user_tips({ nickname: String(userId) });
+
+    setUserRewards(yoctoNEARToNear(rewards));
+  }, []);
+
   useEffect(() => {
-    contract.current.get_user_tips({ nickname: String(userId) }).then(rewards => {
-      setUserRewards(yoctoNEARToNear(rewards));
-    })
+    updateBalance();
   }, []);
 
   const claimRewards = useCallback(async () => {
@@ -40,7 +46,7 @@ const ClaimRewards = ({ wallet, contract, userInfo }) => {
 
     // sign transactions through validators
     const responses = await Promise.allSettled(VALIDATORS.map(validator => {
-      return axios.post(validator, {
+      return axios.post(`${validator}/v1/trans/sign`, {
         accessToken,
         userId: String(userId),
       });
@@ -82,6 +88,7 @@ const ClaimRewards = ({ wallet, contract, userInfo }) => {
       console.log('claim', {response});
 
       localStorage.removeItem(USER_INFO_LOCAL_STORAGE_KEY);
+      updateBalance();
     }
   }, []);
 
