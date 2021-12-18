@@ -11,9 +11,9 @@ import { yoctoNEARToNear } from './utils';
 import styles from './ClaimRewards.module.scss';
 
 const VALIDATORS = [
-  'http://165.227.173.249:8081',
-  'http://207.154.251.251:8081',
-  'http://207.180.249.14:8081',
+  'https://val1.near-tips.com',
+  'https://val2.near-tips.com',
+  'https://val3.near-tips.com',
 ];
 
 const ClaimRewards = ({ wallet, contract, userInfo }) => {
