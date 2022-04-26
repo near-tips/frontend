@@ -5,3 +5,11 @@ export const yoctoNEARToNear = (yoctoNear) => {
 
   return utils.format.formatNearAmount(normalAmountString);
 }
+
+export const hashToU8Array = (hash) => {
+  return [...Buffer.from(hash.toString(), 'hex')];
+}
+
+export const Service = {
+  stackOverflow: 'Stackoverflow',
+}
