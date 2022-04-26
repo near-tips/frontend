@@ -113,7 +113,7 @@ const ClaimRewards = ({ wallet, contract, userInfo }) => {
     }
 
     setIsLoading(false);
-  }, []);
+  }, [accessToken, accountId]);
 
   return isLoading ? <Loader className={styles.loader} /> : (
     <div>
