@@ -2,18 +2,18 @@ import { connect, keyStores, WalletConnection, Contract } from 'near-api-js';
 
 export const DEFAULT_GAS = 300000000000000;
 
-const contractAddress = 'near-tips.testnet';
+const contractAddress = process.env.REACT_APP_NEAR_CONTRACT_ADDRESS;
 
 const viewMethods = ["get_deposit_account_id", "get_service_id_tips", "get_account_id_tips", "get_linked_accounts"];
 const changeMethods = ["deposit_account", "send_tips", "withdraw_deposit", "withdraw_tips", "authentification_commitment", "link_account"];
 
 const config = {
-  networkId: "testnet",
+  networkId: process.env.REACT_APP_NEAR_NETWORK_ID,
   keyStore: new keyStores.BrowserLocalStorageKeyStore(),
-  nodeUrl: "https://rpc.testnet.near.org",
-  walletUrl: "https://wallet.testnet.near.org",
-  helperUrl: "https://helper.testnet.near.org",
-  explorerUrl: "https://explorer.testnet.near.org",
+  nodeUrl: process.env.REACT_APP_NEAR_NODE_URL,
+  walletUrl: process.env.REACT_APP_NEAR_WALLET_URL,
+  helperUrl: process.env.REACT_APP_NEAR_HELPER_URL,
+  explorerUrl: process.env.REACT_APP_NEAR_EXPLORER_URL,
 };
 
 export const connectWallet = async () => {
