@@ -1,7 +1,19 @@
 @import 'styles/variables.module';
 
 .content {
-  background-color: $background-primary;
   width: 100%;
   display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  padding-top: 70px;
+}
+
+.scene {
+  min-width: 350px;
+  height: 400px;
+  width: 400px;
+  background-color: $background-secondary;
+  border-radius: 20px;
+  padding: 30px 20px;
+  margin: 25px;
 }

@@ -1,8 +1,8 @@
 import axios from 'axios';
 import queryString from 'query-string';
 
-export const loginWithStackOverflow = (redirectUrl) => {
-  window.open(`https://stackoverflow.com/oauth/dialog?client_id=${process.env.REACT_APP_STACKOVERFLOW_CLIENT_ID}&scope=&redirect_uri=${redirectUrl}`, "_self");
+export const loginWithStackOverflow = () => {
+  window.open(`https://stackoverflow.com/oauth/dialog?client_id=${process.env.REACT_APP_STACKOVERFLOW_CLIENT_ID}&scope=&redirect_uri=${window.location.toString()}`, "_self");
 }
 
 export const getAccessToken = (hash) => {

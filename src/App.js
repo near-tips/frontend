@@ -12,9 +12,13 @@ function App() {
       <Header />
 
       <div className={styles.content}>
-        <Socials />
+        <Socials
+          className={styles.scene}
+        />
 
-        <Rewards />
+        <Rewards
+          className={styles.scene}
+        />
       </div>
     </div>
   )

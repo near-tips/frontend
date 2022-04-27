@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import AppDataProvider from 'shared/AppDataContext/AppDataProvider';
+import { StackOverflowProvider } from 'services/stackoverflow';
 
 import App from './App';
 
@@ -10,9 +10,9 @@ import './styles/index.scss';
 
 ReactDOM.render(
   <React.StrictMode>
-    <AppDataProvider>
+    <StackOverflowProvider>
       <App />
-    </AppDataProvider>
+    </StackOverflowProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
