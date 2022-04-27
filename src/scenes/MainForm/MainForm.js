@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-import StackOverflowLogin from './StackOverflowLogin';
-import NearWalletLogin from './NearWalletLogin';
-import ClaimRewards from './ClaimRewards';
+import StackOverflowLogin from 'components/StackOverflowLogin';
+import NearWalletLogin from 'components/NearWalletLogin';
+import ClaimRewards from 'components/ClaimRewards';
 
 import styles from './MainForm.module.scss';
 

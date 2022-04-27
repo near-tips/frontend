@@ -1,13 +1,21 @@
 import React from "react";
 
 import Header from 'components/Header';
-import Content from 'components/Content';
+import Socials from 'scenes/Socials';
+import Rewards from 'scenes/Rewards';
+
+import styles from './App.module.scss';
 
 function App() {
   return (
     <div>
       <Header />
-      <Content />
+
+      <div className={styles.content}>
+        <Socials />
+
+        <Rewards />
+      </div>
     </div>
   )
 }

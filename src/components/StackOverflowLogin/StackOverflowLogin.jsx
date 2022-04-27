@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import Loader from 'components/Loader';
 import { USER_INFO_LOCAL_STORAGE_KEY } from 'constants/localStorageKeys';
 
-import { loginWithStackOverflow, fetchUserInfo, getAccessToken } from './utils';
+import { loginWithStackOverflow, fetchUserInfo, getAccessToken } from 'utils/stackoverflowUtils';
 
 import styles from './StackOverflowLogin.module.scss';
 

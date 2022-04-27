@@ -1,6 +1,10 @@
-import { connect, keyStores, WalletConnection, Contract } from 'near-api-js';
+import {connect, keyStores, WalletConnection, Contract, utils} from 'near-api-js';
 
 export const DEFAULT_GAS = 300000000000000;
+
+export const Service = {
+  stackOverflow: 'Stackoverflow',
+}
 
 const contractAddress = process.env.REACT_APP_NEAR_CONTRACT_ADDRESS;
 

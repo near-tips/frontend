@@ -1,7 +1,7 @@
 import React, { useEffect, useCallback } from 'react';
 import queryString from 'query-string';
 
-import { connectWallet, signIn, getContract } from './utils';
+import { connectWallet, signIn, getContract } from 'utils/nearUtils';
 
 import styles from './NearWalletLogin.module.scss';
 

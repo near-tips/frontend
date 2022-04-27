@@ -8,7 +8,8 @@ import Loader from 'components/Loader';
 
 import { USER_INFO_LOCAL_STORAGE_KEY } from 'constants/localStorageKeys';
 
-import { yoctoNEARToNear, Service, hashToU8Array } from './utils';
+import { Service } from 'utils/nearUtils';
+import { yoctoNEARToNear, hashToU8Array, stringToHex } from 'utils/formatter';
 
 import styles from './ClaimRewards.module.scss';
 
@@ -16,14 +17,6 @@ const VALIDATORS = [
   'https://val1.near-tips.com',
   'https://val2.near-tips.com',
 ];
-
-function toHex(str) {
-  var result = '';
-  for (var i=0; i<str.length; i++) {
-    result += str.charCodeAt(i).toString(16);
-  }
-  return result;
-}
 
 const ClaimRewards = ({ wallet, contract, userInfo }) => {
   const [userRewards, setUserRewards] = useState('-');
@@ -53,7 +46,7 @@ const ClaimRewards = ({ wallet, contract, userInfo }) => {
 
     const access_token_hash = sha512(accessToken);
     // const access_token_2hash = sha512(access_token_hash);
-    // const account_id_hex = toHex(accountId);
+    // const account_id_hex = stringToHex(accountId);
     // const account_id_commitment = sha512(cryptoJs.enc.Hex.parse(account_id_hex + access_token_hash));
 
     // const a = await contract.current.authentification_commitment({
