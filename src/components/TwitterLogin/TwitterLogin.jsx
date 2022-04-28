@@ -6,8 +6,9 @@ const TwitterLogin = () => {
   return (
     <button
       className={styles.twitterButton}
+      disabled={true}
     >
-      Twitter
+      Twitter :: Coming Soon
     </button>
   )
 }
