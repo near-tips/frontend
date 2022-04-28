@@ -1,4 +1,4 @@
-import { connect, keyStores, WalletConnection, Contract, utils, providers } from 'near-api-js';
+import { connect, keyStores, WalletConnection, Contract, providers } from 'near-api-js';
 
 export const DEFAULT_GAS = 300000000000000;
 
@@ -29,6 +29,7 @@ export const connectWallet = async () => {
 }
 
 export const signIn = (wallet) => {
+  console.log({ wallet })
   if (!wallet.isSignedIn()) {
     wallet.requestSignIn({
       successUrl: `${window.location.toString()}?signedNear=true`,

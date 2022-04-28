@@ -1,4 +1,4 @@
-import React, {useState, useMemo, useEffect, useCallback} from 'react';
+import React, { useState, useMemo, useEffect, useCallback } from 'react';
 
 import { USER_INFO_LOCAL_STORAGE_KEY } from 'constants/localStorageKeys';
 

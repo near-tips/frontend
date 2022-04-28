@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import queryString from 'query-string'
 
 import useStackOverflow from 'services/stackoverflow'
-import {yoctoNEARToNear} from 'utils/formatter'
 
 import NearContext from './NearContext'
-import { connectWallet, getContract, signIn as nearSignIn, Service, callViewMethodViaProvider } from './utils'
+import { connectWallet, getContract, signIn as nearSignIn } from './utils'
 import useLinkAccount from './useLinkAccount'
 import useUpdateBalance from './useUpdateBalance'
 
@@ -21,7 +20,7 @@ const NearProvider = ({ children }) => {
     userInfo,
     updateBalance,
     contract,
-    accountId: wallet?.accountId?.()?.accountId,
+    accountId: wallet?.account?.()?.accountId,
   })
 
   useEffect(() => {
@@ -47,14 +46,14 @@ const NearProvider = ({ children }) => {
     return {
       wallet,
       contract,
-      isLoggedIn: wallet?.isLoggedIn,
-      accountId: wallet?.accountId?.()?.accountId,
+      isLoggedIn: wallet?.isSignedIn?.(),
+      accountId: wallet?.account?.()?.accountId,
       signIn: () => nearSignIn(wallet),
       userRewards,
       updateBalance,
       linkAccount,
     }
-  }, [wallet, contract, userRewards, linkAccount])
+  }, [wallet, contract, userRewards, linkAccount, updateBalance])
 
   return (
     <NearContext.Provider value={value}>

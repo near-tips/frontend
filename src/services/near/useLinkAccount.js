@@ -12,6 +12,9 @@ const VALIDATORS = [
 
 const useLinkAccount = ({ userInfo, updateBalance, contract, accountId }) => {
   return useCallback(async () => {
+    console.log({
+      userInfo, contract, accountId,
+    })
     if (!userInfo || !contract || !accountId) {
       return
     }
@@ -53,7 +56,7 @@ const useLinkAccount = ({ userInfo, updateBalance, contract, accountId }) => {
     })
 
     if (signatures.length > 0) {
-      const response = await contract.current.link_account({
+      const response = await contract.link_account({
         service_id: {
           service: Service.stackOverflow,
           id: String(userId),

@@ -1,0 +1,19 @@
+@import 'styles/button';
+@import 'styles/variables.module';
+
+.withdrawTo {
+  display: flex;
+  flex-direction: column;
+}
+
+.addressInput {
+  height: 35px;
+  padding: 0 10px;
+  border-radius: 20px;
+  border: 1px solid $button-color;
+  margin-bottom: 10px;
+}
+
+.button {
+  @extend .button;
+}

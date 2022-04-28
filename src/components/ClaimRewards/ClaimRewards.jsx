@@ -9,30 +9,25 @@ import styles from './ClaimRewards.module.scss';
 const ClaimRewards = () => {
   const { linkAccount, userRewards } = useNear()
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false)
 
   // TODO: add condition after link created (just withdraw)
   const claimRewards = useCallback(async () => {
-    setIsLoading(true);
+    setIsLoading(true)
 
     await linkAccount()
 
-    setIsLoading(false);
+    setIsLoading(false)
   }, [linkAccount]);
 
   return isLoading ? <Loader className={styles.loader} /> : (
-    <div>
-      <div className={styles.label}>
-        You have rewards: {userRewards} Ⓝ
-      </div>
-      <button
-        onClick={claimRewards}
-        disabled={userRewards === 0}
-        className={styles.claimRewards}
-      >
-        Claim Rewards
-      </button>
-    </div>
+    <button
+      onClick={claimRewards}
+      disabled={userRewards === 0}
+      className={styles.claimRewards}
+    >
+      Claim Rewards
+    </button>
   )
 };
 

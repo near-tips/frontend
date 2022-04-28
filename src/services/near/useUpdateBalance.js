@@ -15,7 +15,7 @@ const useUpdateBalance = ({ setUserRewards }) => {
         }
       }
     }).then(res => {
-      setUserRewards(current => current + yoctoNEARToNear(res))
+      setUserRewards(current => current + Number(yoctoNEARToNear(res)))
     })
   }, [setUserRewards])
 }
