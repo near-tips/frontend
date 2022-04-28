@@ -1,0 +1,66 @@
+import React, { useState, useEffect, useMemo, useCallback } from 'react'
+import queryString from 'query-string'
+
+import useStackOverflow from 'services/stackoverflow'
+import {yoctoNEARToNear} from 'utils/formatter'
+
+import NearContext from './NearContext'
+import { connectWallet, getContract, signIn as nearSignIn, Service, callViewMethodViaProvider } from './utils'
+import useLinkAccount from './useLinkAccount'
+import useUpdateBalance from './useUpdateBalance'
+
+const NearProvider = ({ children }) => {
+  const { userInfo } = useStackOverflow()
+
+  const [wallet, setWallet] = useState(null)
+  const [contract, setContract] = useState(null)
+  const [userRewards, setUserRewards] = useState(0)
+
+  const updateBalance = useUpdateBalance({ setUserRewards })
+  const linkAccount = useLinkAccount({
+    userInfo,
+    updateBalance,
+    contract,
+    accountId: wallet?.accountId?.()?.accountId,
+  })
+
+  useEffect(() => {
+    connectWallet().then(wallet => {
+      setWallet(wallet);
+      setContract(getContract(wallet));
+
+      const parsedQuery = queryString.parse(window.location.search);
+
+      if (parsedQuery.signedNear) {
+        window.location.replace(window.location.origin);
+      }
+    })
+  }, []);
+
+  useEffect(() => {
+    if (userInfo) {
+      updateBalance(userInfo.userId)
+    }
+  }, [userInfo])
+
+  const value = useMemo(() => {
+    return {
+      wallet,
+      contract,
+      isLoggedIn: wallet?.isLoggedIn,
+      accountId: wallet?.accountId?.()?.accountId,
+      signIn: () => nearSignIn(wallet),
+      userRewards,
+      updateBalance,
+      linkAccount,
+    }
+  }, [wallet, contract, userRewards, linkAccount])
+
+  return (
+    <NearContext.Provider value={value}>
+      {children}
+    </NearContext.Provider>
+  )
+}
+
+export default NearProvider

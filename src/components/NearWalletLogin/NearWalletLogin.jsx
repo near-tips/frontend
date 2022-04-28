@@ -1,37 +1,18 @@
-import React, { useEffect, useCallback } from 'react';
-import queryString from 'query-string';
+import React from 'react';
 
-import { connectWallet, signIn, getContract } from 'utils/nearUtils';
+import useNear from 'services/near'
 
 import styles from './NearWalletLogin.module.scss';
 
-const NearWalletLogin = ({ setWallet, contract, wallet }) => {
-  useEffect(() => {
-    connectWallet().then(wallet => {
-      setWallet(wallet);
-
-      contract.current = getContract(wallet);
-
-      const parsedQuery = queryString.parse(window.location.search);
-
-      if (parsedQuery.signedNear) {
-        window.location.replace(window.location.origin);
-      }
-    })
-  }, []);
-
-  const handleClick = useCallback(() => {
-    if (!wallet.isSignedIn()) {
-      signIn(wallet);
-    }
-  }, [wallet]);
+const NearWalletLogin = () => {
+  const { signIn } = useNear()
 
   return (
     <button
       className={styles.nearButton}
-      onClick={handleClick}
+      onClick={signIn}
     >
-      Login with Near
+      Connect
     </button>
   )
 }
