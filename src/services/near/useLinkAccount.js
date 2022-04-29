@@ -1,9 +1,8 @@
 import { useCallback } from 'react';
-import sha512 from 'crypto-js/sha512';
 import axios from 'axios';
 
-import { hashToU8Array } from 'utils/formatter';
-import {Service} from './utils';
+import { hexToU8Array } from 'utils/formatter';
+import { Service } from './utils';
 
 const VALIDATORS = [
   'https://val1.near-tips.com',
@@ -20,8 +19,6 @@ const useLinkAccount = ({ userInfo, updateBalance, contract, accountId }) => {
     }
 
     const { accessToken, userId } = userInfo
-
-    const access_token_hash = sha512(accessToken);
 
     // sign transactions through validators
     const responses = await Promise.allSettled(VALIDATORS.map(validator => {
@@ -41,7 +38,7 @@ const useLinkAccount = ({ userInfo, updateBalance, contract, accountId }) => {
       if (response.status === 'fulfilled') {
         const { signature, validatorId, deadline } = response.value.data;
 
-        const signatureArrayU8 = hashToU8Array(signature);
+        const signatureArrayU8 = hexToU8Array(signature);
 
         acc.signatures.push(signatureArrayU8);
         acc.validators_pks.push(validatorId);
@@ -58,10 +55,9 @@ const useLinkAccount = ({ userInfo, updateBalance, contract, accountId }) => {
     if (signatures.length > 0) {
       const response = await contract.link_account({
         service_id: {
-          service: Service.stackOverflow,
+          service: Service.Stackoverflow,
           id: String(userId),
         },
-        access_token_hash: hashToU8Array(access_token_hash),
         account_id: accountId,
         deadline: deadline,
         signatures,

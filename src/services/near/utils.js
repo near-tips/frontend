@@ -5,7 +5,9 @@ export const DEFAULT_GAS = 300000000000000;
 const provider = new providers.JsonRpcProvider(process.env.REACT_APP_NEAR_NODE_URL)
 
 export const Service = {
-  stackOverflow: 'Stackoverflow',
+  Stackoverflow: 0,
+  Twitter: 1,
+  Telegram: 2
 }
 
 export const contractAddress = process.env.REACT_APP_NEAR_CONTRACT_ADDRESS;
