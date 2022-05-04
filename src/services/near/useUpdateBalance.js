@@ -10,7 +10,7 @@ const useUpdateBalance = ({ setUserRewards }) => {
       methodName: 'get_service_id_tips',
       args: {
         service_id: {
-          service: Service.stackOverflow,
+          service: 'Stackoverflow',
           id: String(userId)
         }
       }
