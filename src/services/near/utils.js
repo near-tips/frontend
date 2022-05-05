@@ -6,8 +6,8 @@ const provider = new providers.JsonRpcProvider(process.env.REACT_APP_NEAR_NODE_U
 
 export const Service = {
   Stackoverflow: 'Stackoverflow',
-  Twitter: 1,
-  Telegram: 2
+  Twitter: 'Twitter',
+  Reddit: 'Reddit',
 }
 
 export const contractAddress = process.env.REACT_APP_NEAR_CONTRACT_ADDRESS;

@@ -15,7 +15,7 @@ const NearProvider = ({ children }) => {
   const [contract, setContract] = useState(null)
   const [userRewards, setUserRewards] = useState(0)
 
-  const updateBalance = useUpdateBalance({ setUserRewards })
+  const updateBalance = useUpdateBalance({ setUserRewards, contract, wallet })
   const linkAccount = useLinkAccount({
     userInfo,
     setUserRewards,
@@ -38,9 +38,9 @@ const NearProvider = ({ children }) => {
 
   useEffect(() => {
     if (userInfo) {
-      updateBalance(userInfo.userId)
+      updateBalance()
     }
-  }, [userInfo])
+  }, [contract])
 
   const value = useMemo(() => {
     return {
