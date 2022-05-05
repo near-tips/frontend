@@ -7,14 +7,14 @@ import { callViewMethodViaProvider, Service } from './utils';
 
 const useUpdateBalance = ({ setUserRewards, contract, wallet }) => {
   const { userInfo } = useStackOverflow()
-  console.log({ userInfo, contract, wallet })
 
   return useCallback(async () => {
     if (contract) {
       const res = await contract.get_account_id_tips({account_id: wallet.account().accountId})
 
-      setUserRewards(res)
+      setUserRewards(Number(yoctoNEARToNear(res)))
     } else {
+      // TODO: change for more services depence on logged in services
       const services = [{
         id: userInfo?.userId,
         name: 'Stackoverflow',

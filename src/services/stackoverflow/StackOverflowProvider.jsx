@@ -8,8 +8,6 @@ import { fetchUserInfo, getAccessToken } from './utils';
 const StackOverflowProvider = ({ children }) => {
   const [userInfo, setUserInfo] = useState(null)
 
-  // TODO: add SC checking for already created link with stackoverflow account
-
   const fetchUser = useCallback((auth) => {
     return fetchUserInfo(auth.accessToken).then(response => {
       console.log({ response })

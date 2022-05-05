@@ -9,6 +9,8 @@ const NearContext = createContext({
   userRewards: 0,
   updateBalance: () => {},
   linkAccount: () => {},
+  linkedAccounts: [],
+  withdrawTips: () => {},
 })
 
 export default NearContext

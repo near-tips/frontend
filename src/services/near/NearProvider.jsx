@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect, useMemo, useCallback } from 'react'
 import queryString from 'query-string'
 
 import useStackOverflow from 'services/stackoverflow'
@@ -14,33 +14,49 @@ const NearProvider = ({ children }) => {
   const [wallet, setWallet] = useState(null)
   const [contract, setContract] = useState(null)
   const [userRewards, setUserRewards] = useState(0)
+  const [linkedAccounts, setLinkedAccounts] = useState([])
 
-  const updateBalance = useUpdateBalance({ setUserRewards, contract, wallet })
+  const updateBalance = useUpdateBalance({ setUserRewards, contract, wallet });
   const linkAccount = useLinkAccount({
     userInfo,
     setUserRewards,
     contract,
     accountId: wallet?.account?.()?.accountId,
-  })
+  });
+  const withdrawTips = useCallback(async () => {
+    await contract.withdraw_tips();
+
+    setUserRewards(0);
+  }, [contract]);
 
   useEffect(() => {
-    connectWallet().then(wallet => {
+    const setup = async () => {
+      const wallet = await connectWallet();
+
+      const contract = getContract(wallet);
+
       setWallet(wallet);
-      setContract(getContract(wallet));
+      setContract(contract);
+
+      const res = await contract.get_linked_accounts({ account_id: wallet.account().accountId });
+
+      setLinkedAccounts(res)
 
       const parsedQuery = queryString.parse(window.location.search);
 
       if (parsedQuery.signedNear) {
         window.location.replace(window.location.origin);
       }
-    })
+    }
+
+    setup().catch(console.error)
   }, []);
 
   useEffect(() => {
-    if (userInfo) {
+    if (userInfo || contract) {
       updateBalance()
     }
-  }, [contract])
+  }, [userInfo, contract])
 
   const value = useMemo(() => {
     return {
@@ -52,8 +68,10 @@ const NearProvider = ({ children }) => {
       userRewards,
       updateBalance,
       linkAccount,
+      linkedAccounts,
+      withdrawTips,
     }
-  }, [wallet, contract, userRewards, linkAccount, updateBalance])
+  }, [wallet, contract, userRewards, linkAccount, updateBalance, linkedAccounts, withdrawTips])
 
   return (
     <NearContext.Provider value={value}>

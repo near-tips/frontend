@@ -7,18 +7,22 @@ import useNear from 'services/near'
 import styles from './ClaimRewards.module.scss';
 
 const ClaimRewards = () => {
-  const { linkAccount, userRewards } = useNear()
+  const { linkAccount, userRewards, linkedAccounts, withdrawTips } = useNear()
 
   const [isLoading, setIsLoading] = useState(false)
 
-  // TODO: add condition after link created (just withdraw)
   const claimRewards = useCallback(async () => {
     setIsLoading(true)
 
-    await linkAccount()
+    // TODO: change for more services
+    if (linkedAccounts.length === 0) {
+      await linkAccount()
+    } else {
+      await withdrawTips()
+    }
 
     setIsLoading(false)
-  }, [linkAccount]);
+  }, [linkAccount, linkedAccounts]);
 
   return isLoading ? <Loader className={styles.loader} /> : (
     <button
