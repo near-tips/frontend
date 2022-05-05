@@ -6,10 +6,6 @@ export const yoctoNEARToNear = (yoctoNear) => {
   return utils.format.formatNearAmount(normalAmountString);
 }
 
-export const hexToU8Array = (hash) => {
-  return [...Buffer.from(hash, 'hex')];
-}
-
 export const fromHexToU8Array = hexString =>
   new Uint8Array(hexString.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
 

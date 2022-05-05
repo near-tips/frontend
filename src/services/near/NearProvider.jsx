@@ -18,7 +18,7 @@ const NearProvider = ({ children }) => {
   const updateBalance = useUpdateBalance({ setUserRewards })
   const linkAccount = useLinkAccount({
     userInfo,
-    updateBalance,
+    setUserRewards,
     contract,
     accountId: wallet?.account?.()?.accountId,
   })
