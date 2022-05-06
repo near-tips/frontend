@@ -13,7 +13,7 @@ export const Service = {
 export const contractAddress = process.env.REACT_APP_NEAR_CONTRACT_ADDRESS;
 
 const viewMethods = ["get_deposit_account_id", "get_service_id_tips", "get_account_id_tips", "get_linked_accounts"];
-const changeMethods = ["deposit_account", "send_tips", "withdraw_deposit", "withdraw_tips", "authentification_commitment", "link_account"];
+const changeMethods = ["deposit_account", "send_tips", "withdraw_deposit", "withdraw_tips", "link_account", "withdraw_tips_to"];
 
 const config = {
   networkId: process.env.REACT_APP_NEAR_NETWORK_ID,
@@ -27,7 +27,7 @@ const config = {
 export const connectWallet = async () => {
   const near = await connect(config);
 
-  return new WalletConnection(near);
+  return new WalletConnection(near, process.env.REACT_APP_NEAR_CONTRACT_ADDRESS);
 }
 
 export const signIn = (wallet) => {

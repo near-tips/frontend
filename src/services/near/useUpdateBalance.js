@@ -9,6 +9,9 @@ const useUpdateBalance = ({ setUserRewards, contract, wallet }) => {
   const { userInfo } = useStackOverflow()
 
   return useCallback(async () => {
+    console.log('updateBalance', {
+      contract, userInfo,
+    })
     if (contract) {
       const res = await contract.get_account_id_tips({account_id: wallet.account().accountId})
 

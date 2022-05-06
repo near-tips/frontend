@@ -29,7 +29,7 @@ const Rewards = ({ className }) => {
 
       <div className={sceneStyles.content}>
         <div className={styles.label}>
-          Withdraw to any Near wallet <br/> <span className={styles.commission}>(10% commission)</span>
+          Withdraw to any Near wallet <br/> <span className={styles.commission}>(5% commission)</span>
         </div>
 
         <WithdrawTo />
