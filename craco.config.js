@@ -9,6 +9,7 @@ module.exports = {
       'constants': path.resolve(__dirname, 'src/constants'),
       'utils': path.resolve(__dirname, 'src/utils'),
       'scenes': path.resolve(__dirname, 'src/scenes'),
+      'services': path.resolve(__dirname, 'src/services'),
     }
   }
 }

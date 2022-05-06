@@ -1,0 +1,17 @@
+@import 'styles/variables.module';
+
+.label {
+  font-size: 20px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.content {
+  background-color: $background-primary;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px;
+  padding: 25px;
+  border-radius: 20px;
+}

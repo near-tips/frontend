@@ -8,8 +8,8 @@ const Loader = ({ className }) => {
     className={className}
     type="BallTriangle"
     color={variables['$button-color']}
-    height={80}
-    width={80}
+    height={55}
+    width={55}
   />;
 };
 

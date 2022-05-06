@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import AppDataProvider from 'shared/AppDataContext/AppDataProvider';
+import { StackOverflowProvider } from 'services/stackoverflow';
+import { NearProvider } from 'services/near';
 
 import App from './App';
 
@@ -10,9 +11,11 @@ import './styles/index.scss';
 
 ReactDOM.render(
   <React.StrictMode>
-    <AppDataProvider>
-      <App />
-    </AppDataProvider>
+    <StackOverflowProvider>
+      <NearProvider>
+        <App />
+      </NearProvider>
+    </StackOverflowProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
