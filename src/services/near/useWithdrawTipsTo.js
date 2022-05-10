@@ -19,6 +19,8 @@ const useWithdrawTipsTo = ({ userInfo, contract, setUserRewards }) => {
       accountId: address,
     });
 
+    if (!linkParams) return;
+
     console.log({ linkParams })
 
     const res = await axios.post(`${BOT_HOST}/v1/withdraw_to`, {
