@@ -1,0 +1,29 @@
+@import "styles/variables.module";
+@import "styles/button";
+
+.wrapper {
+  margin-right: 10px;
+}
+
+.accountId {
+  @extend .button;
+
+  border: 1px solid $button-color;
+  width: 150px;
+  height: 30px;
+  background-color: $background-secondary;
+  color: black;
+  font-size: 14px;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.connect {
+  @extend .button;
+
+  width: 100px;
+  height: 30px;
+  background-color: $black-button;
+}

@@ -45,6 +45,10 @@ export const signIn = (wallet) => {
   }
 };
 
+export const signOut = (wallet) => {
+  wallet.signOut();
+};
+
 export const getContract = (wallet) => {
   if (wallet.isSignedIn()) {
     return new Contract(

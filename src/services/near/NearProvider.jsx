@@ -4,7 +4,7 @@ import queryString from 'query-string';
 import useStackOverflow from 'services/stackoverflow';
 
 import NearContext from './NearContext';
-import { connectWallet, getContract, signIn as nearSignIn } from './utils';
+import { connectWallet, getContract, signIn as nearSignIn, signOut as nearSignOut } from './utils';
 import useLinkAccount from './useLinkAccount';
 import useUpdateBalance from './useUpdateBalance';
 import useWithdrawTipsTo from './useWithdrawTipsTo';
@@ -73,6 +73,10 @@ const NearProvider = ({ children }) => {
       isLoggedIn: wallet?.isSignedIn?.(),
       accountId: wallet?.account?.()?.accountId,
       signIn: () => nearSignIn(wallet),
+      signOut: () => {
+        nearSignOut(wallet);
+        setWallet(null);
+      },
       userRewards,
       updateBalance,
       linkAccount,

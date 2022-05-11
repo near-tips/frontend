@@ -6,6 +6,7 @@ const NearContext = createContext({
   isLoggedIn: false,
   accountId: '',
   signIn: () => {},
+  signOut: () => {},
   userRewards: 0,
   updateBalance: () => {},
   linkAccount: () => {},
