@@ -4,11 +4,11 @@ import useNear from 'services/near';
 
 import styles from './Connect.module.scss';
 
-const Connect = () => {
+const Connect = ({ className }) => {
   const { isLoggedIn, accountId, signIn, signOut } = useNear();
 
   return (
-    <div className={styles.wrapper}>
+    <div className={className}>
       {isLoggedIn ? (
         <button
           className={styles.accountId}

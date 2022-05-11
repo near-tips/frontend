@@ -1,5 +1,7 @@
 @import 'styles/variables.module';
 
+$sm-size: 600px;
+
 .header {
   width: 100%;
   height: 70px;
@@ -12,4 +14,27 @@
 
 .logo {
   margin-left: 20px;
+
+  @media (max-width: $sm-size) {
+    margin-left: 0;
+  }
+}
+
+.extensionLink {
+  text-decoration: none;
+  color: black;
+  width: 142px;
+  text-align: center;
+
+  @media (max-width: $sm-size) {
+    width: 120px;
+  }
+}
+
+.connect {
+  margin-right: 10px;
+
+  @media (max-width: $sm-size) {
+    margin-right: 0;
+  }
 }

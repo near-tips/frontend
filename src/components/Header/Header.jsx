@@ -11,7 +11,15 @@ const Header = () => {
     <div className={styles.header}>
       <Logo className={styles.logo} />
 
-      <Connect />
+      <a
+        href="https://t.co/OmzwviG5S7"
+        target="_blank"
+        className={styles.extensionLink}
+      >
+        Install extension for making tips
+      </a>
+
+      <Connect className={styles.connect} />
     </div>
   )
 };
