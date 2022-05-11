@@ -13,15 +13,17 @@ const useUpdateBalance = ({ setUserRewards, contract, wallet }) => {
       contract, userInfo,
     })
     if (contract) {
-      const res = await contract.get_account_id_tips({account_id: wallet.account().accountId})
+      const res = await contract.get_account_id_tips({account_id: wallet.account().accountId});
 
-      setUserRewards(Number(yoctoNEARToNear(res)))
+      setUserRewards(Number(yoctoNEARToNear(res)));
     } else {
       // TODO: change for more services depence on logged in services
       const services = [{
         id: userInfo?.userId,
-        name: 'Stackoverflow',
+        name: Service.Stackoverflow,
       }].filter(Boolean);
+
+      let rewards = 0;
 
       for (let i = 0; i < services.length; i++) {
         const res = await callViewMethodViaProvider({
@@ -32,10 +34,12 @@ const useUpdateBalance = ({ setUserRewards, contract, wallet }) => {
               id: String(services[i].id)
             }
           }
-        })
+        });
 
-        setUserRewards(current => current + Number(yoctoNEARToNear(res)))
+        rewards += Number(yoctoNEARToNear(res));
       }
+
+      setUserRewards(rewards);
     }
   }, [setUserRewards, userInfo, contract, wallet])
 }

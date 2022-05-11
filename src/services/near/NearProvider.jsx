@@ -47,6 +47,7 @@ const NearProvider = ({ children }) => {
         const res = await contract.get_linked_accounts({account_id: wallet.account().accountId});
 
         setLinkedAccounts(res)
+        updateBalance()
       }
 
       const parsedQuery = queryString.parse(window.location.search);
@@ -60,10 +61,10 @@ const NearProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    if (userInfo || contract) {
+    if (userInfo) {
       updateBalance()
     }
-  }, [userInfo, contract])
+  }, [userInfo])
 
   const value = useMemo(() => {
     return {
