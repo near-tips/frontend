@@ -1,0 +1,27 @@
+name: deployment
+on:
+  push:
+    branches:
+      - master
+jobs:
+
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to Digital Ocean droplet via SSH action
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          script: |
+            # Go to bot repository
+            cd ./neartips/frontend/
+            # Pull changes
+            git pull
+            # Install dependencies
+            yarn
+            # Forever restart
+            yarn build
