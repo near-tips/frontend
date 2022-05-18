@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import queryString from 'query-string';
 
 import useStackOverflow from 'services/stackoverflow';
@@ -6,55 +6,49 @@ import useStackOverflow from 'services/stackoverflow';
 import NearContext from './NearContext';
 import { connectWallet, getContract, signIn as nearSignIn, signOut as nearSignOut } from './utils';
 import useLinkAccount from './useLinkAccount';
-import useUpdateBalance from './useUpdateBalance';
+import useBalance from './useBalance';
 import useWithdrawTipsTo from './useWithdrawTipsTo';
 
 const NearProvider = ({ children }) => {
-  const { userInfo } = useStackOverflow()
+  const { userInfo } = useStackOverflow();
 
-  const [wallet, setWallet] = useState(null)
-  const [contract, setContract] = useState(null)
-  const [userRewards, setUserRewards] = useState(0)
-  const [linkedAccounts, setLinkedAccounts] = useState([])
+  const wallet = useRef(null);
+  const contract = useRef(null);
+  const [linkedAccounts, setLinkedAccounts] = useState([]);
 
-  const updateBalance = useUpdateBalance({ setUserRewards, contract, wallet });
+  const { updateBalance, userRewards } = useBalance({ contract, wallet });
   const linkAccount = useLinkAccount({
     userInfo,
-    setUserRewards,
+    updateBalance,
     contract,
     accountId: wallet?.account?.()?.accountId,
   });
 
   const withdrawTips = useCallback(async () => {
-    await contract.withdraw_tips();
+    await contract.current.withdraw_tips();
 
-    // TODO: use updateBalance after to show true value
-    setUserRewards(0);
-  }, [contract]);
+    await updateBalance();
+  }, [contract, updateBalance]);
 
-  const withdrawTipsTo = useWithdrawTipsTo({ userInfo, setUserRewards, contract });
+  const withdrawTipsTo = useWithdrawTipsTo({ userInfo, updateBalance });
 
   useEffect(() => {
     const setup = async () => {
-      const wallet = await connectWallet();
-
-      const contract = getContract(wallet);
-
-      setWallet(wallet);
-      setContract(contract);
+      wallet.current = await connectWallet();
+      contract.current = getContract(wallet);
 
       if (contract) {
-        const res = await contract.get_linked_accounts({account_id: wallet.account().accountId});
+        const res = await contract.current.get_linked_accounts({account_id: wallet.current.account().accountId});
 
         setLinkedAccounts(res)
-        updateBalance()
+        await updateBalance()
       }
+    }
 
-      const parsedQuery = queryString.parse(window.location.search);
+    const parsedQuery = queryString.parse(window.location.search);
 
-      if (parsedQuery.signedNear) {
-        window.location.replace(window.location.origin);
-      }
+    if (parsedQuery.signedNear) {
+      window.location.replace(window.location.origin);
     }
 
     setup().catch(console.error)
@@ -70,12 +64,12 @@ const NearProvider = ({ children }) => {
     return {
       wallet,
       contract,
-      isLoggedIn: wallet?.isSignedIn?.(),
-      accountId: wallet?.account?.()?.accountId,
+      isLoggedIn: wallet.current?.isSignedIn?.(),
+      accountId: wallet.current?.account?.()?.accountId,
       signIn: () => nearSignIn(wallet),
       signOut: () => {
         nearSignOut(wallet);
-        setWallet(null);
+        wallet.current = null;
       },
       userRewards,
       updateBalance,

@@ -1,19 +1,21 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 
 import { yoctoNEARToNear } from 'utils/formatter';
 import useStackOverflow from 'services/stackoverflow';
 
 import { callViewMethodViaProvider, Service } from './utils';
 
-const useUpdateBalance = ({ setUserRewards, contract, wallet }) => {
+const useBalance = ({ contract, wallet }) => {
+  const [userRewards, setUserRewards] = useState(0);
+
   const { userInfo } = useStackOverflow()
 
-  return useCallback(async () => {
+  const updateBalance = useCallback(async () => {
     console.log('updateBalance', {
       contract, userInfo,
     })
     if (contract) {
-      const res = await contract.get_account_id_tips({account_id: wallet.account().accountId});
+      const res = await contract.current.get_account_id_tips({account_id: wallet.current.account().accountId});
 
       setUserRewards(Number(yoctoNEARToNear(res)));
     } else {
@@ -41,7 +43,12 @@ const useUpdateBalance = ({ setUserRewards, contract, wallet }) => {
 
       setUserRewards(rewards);
     }
-  }, [setUserRewards, userInfo, contract, wallet])
+  }, [setUserRewards, userInfo, wallet.current]);
+
+  return {
+    updateBalance,
+    userRewards,
+  }
 }
 
-export default useUpdateBalance
+export default useBalance;

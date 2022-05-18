@@ -5,8 +5,7 @@ import { BOT_HOST } from 'constants/hosts';
 
 import { generateLinkParams } from './useLinkAccount/utils';
 
-// TODO: move to hooks and reorganize near context
-const useWithdrawTipsTo = ({ userInfo, contract, setUserRewards }) => {
+const useWithdrawTipsTo = ({ userInfo, updateBalance }) => {
   return useCallback(async (address) => {
     if (!userInfo) {
       return;
@@ -29,9 +28,8 @@ const useWithdrawTipsTo = ({ userInfo, contract, setUserRewards }) => {
 
     console.log('Rewards was sent to: ', address, { res });
 
-    // TODO: use updateBalance after to show true value
-    setUserRewards(0);
-  }, [contract, userInfo]);
+    updateBalance();
+  }, [userInfo, updateBalance]);
 }
 
 export default useWithdrawTipsTo;

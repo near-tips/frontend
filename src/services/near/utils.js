@@ -32,8 +32,8 @@ export const connectWallet = async () => {
 
 export const signIn = (wallet) => {
   console.log({ wallet })
-  if (!wallet.isSignedIn()) {
-    wallet.requestSignIn({
+  if (!wallet.current.isSignedIn()) {
+    wallet.current.requestSignIn({
       successUrl: `${window.location.toString()}?signedNear=true`,
       failureUrl: `${window.location.toString()}?signedNear=false`,
       contractId: contractAddress,
@@ -46,18 +46,18 @@ export const signIn = (wallet) => {
 };
 
 export const signOut = (wallet) => {
-  wallet.signOut();
+  wallet.current.signOut();
 };
 
 export const getContract = (wallet) => {
-  if (wallet.isSignedIn()) {
+  if (wallet.current.isSignedIn()) {
     return new Contract(
-      wallet.account(),
+      wallet.current.account(),
       contractAddress,
       {
         viewMethods,
         changeMethods,
-        sender: wallet.account(),
+        sender: wallet.current.account(),
       }
     );
   }
