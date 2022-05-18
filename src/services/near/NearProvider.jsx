@@ -37,7 +37,7 @@ const NearProvider = ({ children }) => {
       wallet.current = await connectWallet();
       contract.current = getContract(wallet);
 
-      if (contract) {
+      if (contract.current) {
         const res = await contract.current.get_linked_accounts({account_id: wallet.current.account().accountId});
 
         setLinkedAccounts(res)
