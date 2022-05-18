@@ -14,7 +14,7 @@ const useBalance = ({ contract, wallet }) => {
     console.log('updateBalance', {
       contract, userInfo,
     })
-    if (contract) {
+    if (contract.current) {
       const res = await contract.current.get_account_id_tips({account_id: wallet.current.account().accountId});
 
       setUserRewards(Number(yoctoNEARToNear(res)));
