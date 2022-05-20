@@ -20,3 +20,11 @@
   cursor: not-allowed;
   background-color: $disabled;
 }
+
+.link {
+  @extend .button;
+
+  text-decoration: none;
+  line-height: 55px;
+  font-weight: bold;
+}

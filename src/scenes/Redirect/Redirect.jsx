@@ -4,8 +4,8 @@ import queryString from 'query-string';
 import { useLocation } from 'react-router-dom';
 import { providers } from 'near-api-js';
 
-import successIcon from './assets/success.png';
-import failureIcon from './assets/failure.png';
+import successIcon from 'images/success.png';
+import failureIcon from 'images/failure.png';
 import styles from './Redirect.module.scss';
 
 const provider = new providers.JsonRpcProvider(
