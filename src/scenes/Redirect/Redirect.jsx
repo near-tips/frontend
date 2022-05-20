@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import cn from 'classnames';
 import queryString from 'query-string';
 import { useLocation } from 'react-router-dom';
@@ -32,6 +32,10 @@ const Redirect = ({ className }) => {
     checkTx(transactionHashes, accountId).catch(console.error);
   }, [transactionHashes, accountId]);
 
+  const handleClick = useCallback(() => {
+    window.open(redirectUrl, '_self');
+  }, [redirectUrl]);
+
   const isSuccess = success === 'true';
 
   return success === null ? null : (
@@ -46,13 +50,12 @@ const Redirect = ({ className }) => {
         {isSuccess ? successMessage : failureMessage}
       </div>
 
-      <a
+      <button
         className={styles.goBack}
-        href={redirectUrl}
-        target="_self"
+        onClick={handleClick}
       >
         Go Back
-      </a>
+      </button>
     </div>
   )
 };
