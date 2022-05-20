@@ -12,6 +12,7 @@ import Socials from 'scenes/Socials';
 import Rewards from 'scenes/Rewards';
 import Redirect from 'scenes/Redirect';
 import NotFound from 'scenes/NotFound';
+import ScreenLoader from 'scenes/ScreenLoader';
 
 import styles from './App.module.scss';
 
@@ -60,6 +61,8 @@ function App() {
         draggable
         pauseOnHover
       />
+
+      <ScreenLoader />
     </div>
   )
 }

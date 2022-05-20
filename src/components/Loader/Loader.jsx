@@ -1,16 +1,20 @@
 import React from 'react';
-import ReactLoader from "react-loader-spinner";
+import cn from 'classnames';
+import { SpinnerInfinity } from 'spinners-react';
 
-import variables from 'styles/variables.module.scss';
+import styles from './Loader.module.scss';
 
 const Loader = ({ className }) => {
-  return <ReactLoader
-    className={className}
-    type="BallTriangle"
-    color={variables['$button-color']}
-    height={55}
-    width={55}
-  />;
+  return (
+    <SpinnerInfinity
+      className={cn([className, styles.loader])}
+      size={120}
+      thickness={100}
+      speed={70}
+      color="none"
+      secondaryColor="rgba(0, 0, 0, 0.44)"
+    />
+  )
 };
 
 export default Loader;
