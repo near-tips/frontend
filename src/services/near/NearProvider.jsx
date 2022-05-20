@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import queryString from 'query-string';
+import { toast } from 'react-toastify';
 
 import useStackOverflow from 'services/stackoverflow';
 
@@ -22,15 +23,23 @@ const NearProvider = ({ children }) => {
     updateBalance,
     contract,
     accountId: wallet?.account?.()?.accountId,
+    userRewards,
   });
 
   const withdrawTips = useCallback(async () => {
-    await contract.withdraw_tips();
+    await toast.promise(
+      contract.withdraw_tips(),
+      {
+        pending: `Withdraw pending...`,
+        success: `${userRewards} Ⓝ sent to your wallet.`,
+        error: 'Something went wrong',
+      }
+    );
 
     await updateBalance();
   }, [contract, updateBalance]);
 
-  const withdrawTipsTo = useWithdrawTipsTo({ userInfo, updateBalance });
+  const withdrawTipsTo = useWithdrawTipsTo({ userInfo, updateBalance, userRewards });
 
   useEffect(() => {
     const setup = async () => {
@@ -43,7 +52,6 @@ const NearProvider = ({ children }) => {
       if (wallet.isSignedIn()) {
         const res = await contract.get_linked_accounts({ account_id: wallet.account().accountId });
 
-        console.log({ res })
         setLinkedAccounts(res);
       }
     }

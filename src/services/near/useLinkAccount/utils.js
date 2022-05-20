@@ -12,12 +12,7 @@ class ServiceId {
   }
 }
 
-export const makeSignatures = async ({ accessToken, userId, accountId }) => {
-  console.log({
-    accessToken,
-    userId: String(userId),
-    accountId,
-  })
+const getSignatures = async ({ accessToken, userId, accountId }) => {
   // sign transactions through validators
   const responses = await Promise.allSettled(VALIDATORS.map(validator => {
     return axios.post(`${validator}/v1/trans/sign`, {
@@ -27,11 +22,7 @@ export const makeSignatures = async ({ accessToken, userId, accountId }) => {
     });
   }));
 
-  const {
-    signatures,
-    validators_pks,
-    deadline,
-  } = responses.reduce((acc, response) => {
+  return responses.reduce((acc, response) => {
     if (response.status === 'fulfilled') {
       const { signature, validatorId, deadline } = response.value.data;
 
@@ -51,6 +42,31 @@ export const makeSignatures = async ({ accessToken, userId, accountId }) => {
     validators_pks: [],
     deadline: '0',
   });
+}
+
+export const makeSignatures = async ({ accessToken, userId, accountId }) => {
+  console.log({
+    accessToken,
+    userId: String(userId),
+    accountId,
+  })
+
+  const {
+    signatures,
+    validators_pks,
+    deadline,
+  } = await toast.promise(
+    getSignatures({ accessToken, userId, accountId }),
+    {
+      pending: 'Validators are signing transaction...',
+      success: {
+        render({ data: { signatures } }) {
+          return `Signed by ${signatures.length} validators`;
+        }
+      },
+      error: 'Something went wrong',
+    }
+  );
 
   if (signatures.length > 0) {
     return {
