@@ -22,7 +22,11 @@ const getSignatures = async ({ accessToken, userId, accountId }) => {
     });
   }));
 
-  return responses.reduce((acc, response) => {
+  const {
+    signatures,
+    validators_pks,
+    deadline,
+  } = responses.reduce((acc, response) => {
     if (response.status === 'fulfilled') {
       const { signature, validatorId, deadline } = response.value.data;
 
@@ -42,6 +46,16 @@ const getSignatures = async ({ accessToken, userId, accountId }) => {
     validators_pks: [],
     deadline: '0',
   });
+
+  if (signatures.length === 0) {
+    throw 'Not enough signatures';
+  }
+
+  return {
+    signatures,
+    validators_pks,
+    deadline,
+  };
 }
 
 export const makeSignatures = async ({ accessToken, userId, accountId }) => {
