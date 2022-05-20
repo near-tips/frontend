@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 import { VALIDATORS } from 'constants/hosts';
 
@@ -11,7 +12,7 @@ class ServiceId {
   }
 }
 
-export const generateLinkParams = async ({ accessToken, userId, accountId }) => {
+export const makeSignatures = async ({ accessToken, userId, accountId }) => {
   console.log({
     accessToken,
     userId: String(userId),

@@ -3,7 +3,7 @@ import axios from 'axios';
 
 import { BOT_HOST } from 'constants/hosts';
 
-import { generateLinkParams } from './useLinkAccount/utils';
+import { makeSignatures } from './useLinkAccount/utils';
 
 const useWithdrawTipsTo = ({ userInfo, updateBalance }) => {
   return useCallback(async (address) => {
@@ -11,19 +11,19 @@ const useWithdrawTipsTo = ({ userInfo, updateBalance }) => {
       return;
     }
 
-    const linkParams = await generateLinkParams({
+    const withdrawParams = await makeSignatures({
       accessToken: userInfo.accessToken,
       userId: userInfo.userId,
       // TODO: add existence check for address
       accountId: address,
     });
 
-    if (!linkParams) return;
+    if (!withdrawParams) return;
 
-    console.log({ linkParams })
+    console.log({ withdrawParams })
 
     const res = await axios.post(`${BOT_HOST}/v1/withdraw_to`, {
-      ...linkParams,
+      ...withdrawParams,
     });
 
     console.log('Rewards was sent to: ', address, { res });

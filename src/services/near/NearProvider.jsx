@@ -12,11 +12,11 @@ import useWithdrawTipsTo from './useWithdrawTipsTo';
 const NearProvider = ({ children }) => {
   const { userInfo } = useStackOverflow();
 
-  const wallet = useRef(null);
-  const contract = useRef(null);
+  const [wallet, setWallet] = useState(null);
+  const [contract, setContract] = useState(null);
   const [linkedAccounts, setLinkedAccounts] = useState([]);
 
-  const { updateBalance, userRewards } = useBalance({ contract, wallet });
+  const { updateBalance, userRewards } = useBalance({ contract, wallet, linkedAccounts });
   const linkAccount = useLinkAccount({
     userInfo,
     updateBalance,
@@ -25,7 +25,7 @@ const NearProvider = ({ children }) => {
   });
 
   const withdrawTips = useCallback(async () => {
-    await contract.current.withdraw_tips();
+    await contract.withdraw_tips();
 
     await updateBalance();
   }, [contract, updateBalance]);
@@ -34,14 +34,17 @@ const NearProvider = ({ children }) => {
 
   useEffect(() => {
     const setup = async () => {
-      wallet.current = await connectWallet();
-      contract.current = getContract(wallet);
+      const wallet = await connectWallet();
+      const contract = getContract(wallet);
 
-      if (contract.current) {
-        const res = await contract.current.get_linked_accounts({account_id: wallet.current.account().accountId});
+      setWallet(wallet);
+      setContract(contract);
 
-        setLinkedAccounts(res)
-        await updateBalance()
+      if (wallet.isSignedIn()) {
+        const res = await contract.get_linked_accounts({ account_id: wallet.account().accountId });
+
+        console.log({ res })
+        setLinkedAccounts(res);
       }
     }
 
@@ -54,22 +57,17 @@ const NearProvider = ({ children }) => {
     setup().catch(console.error)
   }, []);
 
-  useEffect(() => {
-    if (userInfo) {
-      updateBalance()
-    }
-  }, [userInfo])
-
   const value = useMemo(() => {
     return {
       wallet,
       contract,
-      isLoggedIn: wallet.current?.isSignedIn?.(),
-      accountId: wallet.current?.account?.()?.accountId,
+      isLoggedIn: wallet?.isSignedIn?.(),
+      accountId: wallet?.account?.()?.accountId,
       signIn: () => nearSignIn(wallet),
       signOut: () => {
         nearSignOut(wallet);
-        wallet.current = null;
+        setContract(null);
+        setLinkedAccounts([]);
       },
       userRewards,
       updateBalance,

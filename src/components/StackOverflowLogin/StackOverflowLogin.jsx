@@ -19,7 +19,7 @@ const StackOverflowLogin = () => {
       onClick={loginWithStackOverflow}
       disabled={isLoggedIn || isLinked}
     >
-      StackOverflow {isLoggedIn ? ':: logged in' : isLinked ? ':: linked' : ''}
+      StackOverflow {isLinked ? ':: linked' : isLoggedIn ? ':: logged in' : ''}
     </button>
   )
 }

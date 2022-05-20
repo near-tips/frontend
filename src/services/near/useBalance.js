@@ -1,27 +1,27 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 
 import { yoctoNEARToNear } from 'utils/formatter';
 import useStackOverflow from 'services/stackoverflow';
 
 import { callViewMethodViaProvider, Service } from './utils';
 
-const useBalance = ({ contract, wallet }) => {
+const useBalance = ({ contract, wallet, linkedAccounts }) => {
   const [userRewards, setUserRewards] = useState(0);
 
-  const { userInfo } = useStackOverflow()
+  const { userInfo } = useStackOverflow();
 
+  // TODO: change for more services depence on logged in services
   const updateBalance = useCallback(async () => {
     console.log('updateBalance', {
-      contract, userInfo,
+      contract, userInfo, linkedAccounts,
     })
-    if (contract.current) {
-      const res = await contract.current.get_account_id_tips({account_id: wallet.current.account().accountId});
+    if (contract && linkedAccounts.length > 0) {
+      const res = await contract.get_account_id_tips({ account_id: wallet.account().accountId });
 
       setUserRewards(Number(yoctoNEARToNear(res)));
     } else {
-      // TODO: change for more services depence on logged in services
-      const services = [{
-        id: userInfo?.userId,
+      const services = [userInfo && {
+        id: userInfo.userId,
         name: Service.Stackoverflow,
       }].filter(Boolean);
 
@@ -43,7 +43,12 @@ const useBalance = ({ contract, wallet }) => {
 
       setUserRewards(rewards);
     }
-  }, [setUserRewards, userInfo, wallet.current]);
+  }, [setUserRewards, userInfo, wallet, contract, linkedAccounts]);
+
+  useEffect(() => {
+    updateBalance();
+    // add linked accs to dep?
+  }, [userInfo, linkedAccounts]);
 
   return {
     updateBalance,

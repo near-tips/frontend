@@ -2,7 +2,8 @@ import React from 'react';
 import {
   Routes,
   Route,
-} from "react-router-dom";
+} from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 
 import Header from 'components/Header';
 import Socials from 'scenes/Socials';
@@ -45,6 +46,18 @@ function App() {
           />
         </Routes>
       </div>
+
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </div>
   )
 }

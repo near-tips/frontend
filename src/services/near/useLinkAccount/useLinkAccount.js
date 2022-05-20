@@ -1,30 +1,30 @@
 import { useCallback } from 'react';
 
-import { generateLinkParams } from './utils';
+import { makeSignatures } from './utils';
 
 const useLinkAccount = ({ userInfo, updateBalance, contract, accountId }) => {
   return useCallback(async () => {
     console.log({
       userInfo, contract, accountId,
-    })
-    if (!userInfo || !contract.current || !accountId) {
-      return
+    });
+    if (!userInfo || !contract || !accountId) {
+      return;
     }
 
-    const { accessToken, userId } = userInfo
+    const { accessToken, userId } = userInfo;
 
-    const linkParams = await generateLinkParams({
+    const withdrawParams = await makeSignatures({
       accountId,
       accessToken,
       userId,
-    })
+    });
 
-    console.log(linkParams)
+    console.log(withdrawParams);
 
-    await contract.current.link_account(linkParams)
+    await contract.link_account(withdrawParams);
 
-    await updateBalance()
-  }, [userInfo, updateBalance, contract, accountId])
+    await updateBalance();
+  }, [userInfo, updateBalance, contract, accountId]);
 }
 
-export default useLinkAccount
+export default useLinkAccount;
