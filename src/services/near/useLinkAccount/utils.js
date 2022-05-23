@@ -2,6 +2,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 
 import { VALIDATORS } from 'constants/hosts';
+import logger from 'utils/logger';
 
 import { Service } from '../utils';
 
@@ -59,7 +60,7 @@ const getSignatures = async ({ accessToken, userId, accountId }) => {
 }
 
 export const makeSignatures = async ({ accessToken, userId, accountId }) => {
-  console.log({
+  logger.log({
     accessToken,
     userId: String(userId),
     accountId,
@@ -78,7 +79,13 @@ export const makeSignatures = async ({ accessToken, userId, accountId }) => {
           return `Signed by ${signatures.length} validators`;
         }
       },
-      error: 'Something went wrong',
+      error: {
+        render({ error }) {
+          logger.error('Signing problem: ', error);
+
+          return 'Something went wrong. Try again later.';
+        }
+      },
     }
   );
 

@@ -1,5 +1,7 @@
 import { connect, keyStores, WalletConnection, Contract, providers } from 'near-api-js';
 
+import logger from 'utils/logger';
+
 export const DEFAULT_GAS = 300000000000000;
 
 const provider = new providers.JsonRpcProvider(process.env.REACT_APP_NEAR_NODE_URL)
@@ -31,7 +33,7 @@ export const connectWallet = async () => {
 }
 
 export const signIn = (wallet) => {
-  console.log({ wallet })
+  logger.log({ wallet })
   if (!wallet?.isSignedIn?.()) {
     wallet.requestSignIn({
       successUrl: `${window.location.toString()}?signedNear=true`,

@@ -2,6 +2,7 @@ import { useCallback, useState, useEffect } from 'react';
 
 import { yoctoNEARToNear } from 'utils/formatter';
 import useStackOverflow from 'services/stackoverflow';
+import logger from 'utils/logger';
 
 import { callViewMethodViaProvider, Service } from './utils';
 
@@ -12,7 +13,7 @@ const useBalance = ({ contract, wallet, linkedAccounts }) => {
 
   // TODO: change for more services depence on logged in services
   const updateBalance = useCallback(async () => {
-    console.log('updateBalance', {
+    logger.log('updateBalance', {
       contract, userInfo, linkedAccounts,
     })
     if (contract && linkedAccounts.length > 0) {

@@ -3,6 +3,7 @@ import queryString from 'query-string';
 import { toast } from 'react-toastify';
 
 import useStackOverflow from 'services/stackoverflow';
+import logger from 'utils/logger';
 
 import NearContext from './NearContext';
 import { connectWallet, getContract, signIn as nearSignIn, signOut as nearSignOut } from './utils';
@@ -32,7 +33,13 @@ const NearProvider = ({ children }) => {
       {
         pending: `Withdraw pending...`,
         success: `${userRewards} Ⓝ sent to your wallet.`,
-        error: 'Something went wrong',
+        error: {
+          render({ error }) {
+            logger.error('Linked withdraw tips problem', error);
+
+            return 'Something went wrong. Try again later.';
+          }
+        },
       }
     );
 
@@ -62,7 +69,7 @@ const NearProvider = ({ children }) => {
       window.location.replace(window.location.origin);
     }
 
-    setup().catch(console.error)
+    setup().catch(logger.error)
   }, []);
 
   const value = useMemo(() => {

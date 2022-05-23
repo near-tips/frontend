@@ -1,11 +1,13 @@
 import { useCallback } from 'react';
 import { toast } from 'react-toastify';
 
+import logger from 'utils/logger';
+
 import { makeSignatures } from './utils';
 
 const useLinkAccount = ({ userInfo, updateBalance, contract, accountId, userRewards }) => {
   return useCallback(async () => {
-    console.log({
+    logger.log({
       userInfo, contract, accountId,
     });
     if (!userInfo || !contract || !accountId) {
@@ -20,16 +22,26 @@ const useLinkAccount = ({ userInfo, updateBalance, contract, accountId, userRewa
       userId,
     });
 
-    if (!withdrawParams) return;
+    if (!withdrawParams) {
+      logger.error('no withdraw params: problem with signatures');
 
-    console.log(withdrawParams);
+      return;
+    }
+
+    logger.log(withdrawParams);
 
     await toast.promise(
       contract.link_account(withdrawParams),
       {
         pending: `Link & withdraw pending...`,
         success: `Linked and ${userRewards} Ⓝ sent to your wallet.`,
-        error: 'Something went wrong',
+        error: {
+          render({ error }) {
+            logger.error('Link & withdraw problem', error);
+
+            return 'Something went wrong. Try again later.';
+          }
+        },
       }
     );
 

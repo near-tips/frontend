@@ -4,8 +4,10 @@ import queryString from 'query-string';
 import { useLocation } from 'react-router-dom';
 import { providers } from 'near-api-js';
 
+import logger from 'utils/logger';
 import successIcon from 'images/success.png';
 import failureIcon from 'images/failure.png';
+
 import styles from './Redirect.module.scss';
 
 const provider = new providers.JsonRpcProvider(
@@ -29,7 +31,7 @@ const Redirect = ({ className }) => {
       setSuccess(true);
     }
 
-    checkTx(transactionHashes, accountId).catch(console.error);
+    checkTx(transactionHashes, accountId).catch(logger.error);
   }, [transactionHashes, accountId]);
 
   const handleClick = useCallback(() => {

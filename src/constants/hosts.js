@@ -6,3 +6,5 @@ export const VALIDATORS = process.env.NODE_ENV === 'development' ? [
 ];
 
 export const BOT_HOST = process.env.NODE_ENV === 'development' ? 'http://localhost:8083' : 'https://api.near-tips.com';
+
+export const ERROR_LOGS_HOST = 'https://errorbot.near-tips.com';

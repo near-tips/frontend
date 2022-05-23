@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useEffect, useCallback } from 'react';
 
 import { USER_INFO_LOCAL_STORAGE_KEY } from 'constants/localStorageKeys';
+import logger from 'utils/logger';
 
 import StackOverflowContext from './StackOverflowContext'
 import { fetchUserInfo, getAccessToken } from './utils';
@@ -10,7 +11,7 @@ const StackOverflowProvider = ({ children }) => {
 
   const fetchUser = useCallback((auth) => {
     return fetchUserInfo(auth.accessToken).then(response => {
-      console.log({ response })
+      logger.log({ response })
       const userInfo = {
         ...auth,
         userId: response.data.items[0].user_id,
@@ -20,7 +21,7 @@ const StackOverflowProvider = ({ children }) => {
 
       localStorage.setItem(USER_INFO_LOCAL_STORAGE_KEY, JSON.stringify(userInfo));
     }).catch(err => {
-      console.error(err);
+      logger.error(err);
 
       localStorage.removeItem(USER_INFO_LOCAL_STORAGE_KEY);
       setUserInfo(null);
@@ -32,11 +33,11 @@ const StackOverflowProvider = ({ children }) => {
 
     if (userInfo) {
       if ((userInfo.expiration * 1000) + userInfo.timeOfRequest < new Date().getTime()) {
-        console.log('remove deprecated access token');
+        logger.log('remove deprecated access token');
 
         localStorage.removeItem(USER_INFO_LOCAL_STORAGE_KEY);
       } else {
-        console.log('set user from local storage', userInfo);
+        logger.log('set user from local storage', userInfo);
 
         setUserInfo(userInfo);
       }
@@ -52,7 +53,7 @@ const StackOverflowProvider = ({ children }) => {
   }, []);
 
   const value = useMemo(() => {
-    console.log({
+    logger.log({
       userInfo,
       isLoggedIn: Boolean(userInfo),
     })
